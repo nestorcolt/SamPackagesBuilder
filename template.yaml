@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  PackagesBuilder
+
+  Template for building Python third party modules and trick sam into
+  Creating dependencies and upload them as a layers native for linux systems
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  python:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: My-Package-Handler-DoNotRun
+      CodeUri: my_code_data/
+      Handler: app.lambda_handler
+      Runtime: python3.6
+
+
+  PythonPackagesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: PythonPackagesLayer
+      Description: Third party python packages layer
+      ContentUri: ./.aws-sam/build/python
+      RetentionPolicy: Delete
+      CompatibleRuntimes:
+        - python3.6
+    Metadata:
+      BuildMethod: python3.6

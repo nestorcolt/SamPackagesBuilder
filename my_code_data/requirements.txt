@@ -2,3 +2,4 @@ aws-lambda-powertools
 simplejson==3.17.2
 requests
 boto3
+psycopg2
